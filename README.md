@@ -1,2 +1,4 @@
-# tower-game
-Love 2D tower defense game made for a school project. Not only bad code, but also ugly graphics.
+# Tower Defense Game
+This is a LÖVE2D tower defense game made for a school project. 
+
+Beware: Bad code ahead !
