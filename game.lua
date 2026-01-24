@@ -1,11 +1,13 @@
 -- IDEA: Only load images of enemies when they're used in the current level
 
-bgDir = "data/assets/backgrounds"
-enDir = "data/assets/enemies"
+require "ui"
+require "data"
 
-s = 0.48
+test = love.graphics.newImage(bgDir .. "/test.png")
+bgWidth, bgHeight = test:getPixelDimensions()
 
-mapPath = {{0*s,345*s}, {685*s,345*s},{685*s,625*s},{1175*s,645*s},{1175*s,160*s},{1630*s,145*s}} -- Index 1: Entrance, Last index: Exit
+placingTower = false
+
 -- Replace these tables with file loading
 -- (Health, Speed, Image)
 monsterStats = {
@@ -14,9 +16,13 @@ monsterStats = {
              } 
 monsters = {}
 
+function startPlacing(placeable)
+    
+end
 
 function drawGame(background)
-    love.graphics.draw(background, 0, 0, 0, .85*s,.85*s)
+
+    love.graphics.draw(background, 0, 0, 0, .85*scale,.85*scale)
     love.graphics.setColor(0,0,255)
 
     for i,v in pairs(mapPath) do
@@ -28,22 +34,16 @@ function drawGame(background)
 end
 
 function updateMonsters() 
-    for i,v in pairs(monsters) do 
-        if v[4] <  mapPath[v[6]][1] then -- Check if monster x is less than its destination
-            v[4] = v[4] + v[2]
-        end
-        if v[4] > mapPath[v[6]][1] then
-            v[4] = v[4] - v[2]
-        end
-        if v[5] <  mapPath[v[6]][2] then -- Check if monster y is less than its destination
-            v[5] = v[5] + v[2]
-        end
-        if v[5] > mapPath[v[6]][2] then
-           v[5] = v[5] - v[2]
-        end      
-        if (v[4] >= mapPath[v[6]][1] - v[2] and v[4] <= mapPath[v[6]][1] + v[2])  and (v[5] >= mapPath[v[6]][2] - v[2] and v[5] <= mapPath[v[6]][2] + v[2]) then
-            if v[6] +1 < #mapPath +1 then
-                 v[6] = v[6] +1 
+    for i,mon in pairs(monsters) do
+        dx = mapPath[mon[6]][1] - mon[4]
+        dy = mapPath[mon[6]][2] - mon[5]
+        angle = math.atan2(dy,dx)
+        mon[4] = mon[4] + mon[2] * math.cos(angle)
+        mon[5] = mon[5] + mon[2] * math.sin(angle)  
+        -- Check if the enemy will be at the destination next frame
+        if (mon[4] >= mapPath[mon[6]][1] - mon[2] and mon[4] <= mapPath[mon[6]][1] + mon[2])  and (mon[5] >= mapPath[mon[6]][2] - mon[2] and mon[5] <= mapPath[mon[6]][2] + mon[2]) then
+            if mon[6] +1 < #mapPath +1 then
+                 mon[6] = mon[6] +1 
             else
                 table.remove(monsters,i)
                     spawnMonster(monsterStats[math.random(1,2)])
@@ -54,13 +54,13 @@ end
 
 function spawnMonster(monsterType)
     table.insert(monsters, {monsterType[1], monsterType[2], monsterType[3], mapPath[1][1], mapPath[1][2], 2}) -- Spawn at Entrance
-                            -- 1Health       2Speed           3Image           4X              5Y           6Destination
+                            -- 1Health       2Speed           3Image           4X              5Y         6Destination
 end
 
 function drawMonsters()
-    for i,v in pairs(monsters) do
+    for i,mon in pairs(monsters) do
         -- ASSUMING THEY ARE 48x48 FIX THIS IF NOT CHANGED
-        love.graphics.draw(v[3],v[4],v[5],0,1*s,1*s,24,24) --<<--
+        love.graphics.draw(mon[3],mon[4],mon[5],0,1*scale,1*scale,24,24) --<<--
         love.graphics.print("Monsters: "..#monsters)
     end
 end
