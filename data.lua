@@ -1,29 +1,27 @@
 urfs = require "urfs"
+json = require "json"
     
 urfs.mount("data")
 urfs.setWriteDir("data")
 
-bgDir = "data/assets/backgrounds"
 enDir = "data/assets/enemies"
 
-scale = 0.5
+scale = 0.5 -- don't change
+
+level = "test"
+
+levelData = json.decode(love.filesystem.read("levels/"..level..".json"))
+levelBackground = love.graphics.newImage("data/assets/backgrounds/" .. levelData["background"] .. ".png")
 
 newPath = {}
-mapPath = {{0*scale,345*scale},{685*scale,345*scale},{685*scale,625*scale},{1175*scale,645*scale},{1175*scale,160*scale},{1630*scale,145*scale}} -- Index 1: Entrance, Last index: Exit
+mapPath = levelData["path"]
+
 
 function love.keypressed(key)
    if key == "space" then
         table.insert(newPath, {love.mouse.getX(), love.mouse.getY()})
    end
    if key == "t" then
-        if #newPath > 1 then
-            mapPath = newPath
-            for i,v in pairs(monsters) do
-                v[6] = 1
-            end
-        end
-   end
-   if key == "s" then
         if #newPath > 1 then
             mapPath = newPath
             for i,v in pairs(monsters) do

@@ -3,16 +3,15 @@
 require "ui"
 require "data"
 
-test = love.graphics.newImage(bgDir .. "/test.png")
-bgWidth, bgHeight = test:getPixelDimensions()
+bgWidth, bgHeight = levelBackground:getPixelDimensions()
 
 placingTower = false
 
 -- Replace these tables with file loading
 -- (Health, Speed, Image)
 monsterStats = {
-                {3,1.8,love.graphics.newImage(enDir .. "/test.png")},
-                {3,1.5,love.graphics.newImage(enDir .. "/test2.png")}
+                {3,0.5,love.graphics.newImage(enDir .. "/test.png")},
+                {3,0.8,love.graphics.newImage(enDir .. "/test2.png")}
              } 
 monsters = {}
 
@@ -20,9 +19,9 @@ function startPlacing(placeable)
     
 end
 
-function drawGame(background)
+function drawGame()
 
-    love.graphics.draw(background, 0, 0, 0, .85*scale,.85*scale)
+    love.graphics.draw(levelBackground, 0, 0, 0, .85*scale,.85*scale)
     love.graphics.setColor(0,0,255)
 
     for i,v in pairs(mapPath) do
@@ -42,7 +41,7 @@ function updateMonsters()
         mon[5] = mon[5] + mon[2] * math.sin(angle)  
         -- Check if the enemy will be at the destination next frame
         if (mon[4] >= mapPath[mon[6]][1] - mon[2] and mon[4] <= mapPath[mon[6]][1] + mon[2])  and (mon[5] >= mapPath[mon[6]][2] - mon[2] and mon[5] <= mapPath[mon[6]][2] + mon[2]) then
-            if mon[6] +1 < #mapPath +1 then
+            if mon[6] < #mapPath then
                  mon[6] = mon[6] +1 
             else
                 table.remove(monsters,i)

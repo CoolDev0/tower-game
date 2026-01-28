@@ -1,5 +1,7 @@
 buttons = {}
 
+collisionTypes = {{0,0},{1,0},{0,1},{1,0}} -- Corners of a square.. 1 = 100% of the width of the element
+
 function drawButtons()
     
     for i,button in pairs(buttons) do
