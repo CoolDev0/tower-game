@@ -1,23 +1,5 @@
--- IDEA: Only load images of enemies when they're used in the current level
-
 require "ui"
 require "data"
-
-bgWidth, bgHeight = levelBackground:getPixelDimensions()
-
-placingTower = false
-
--- Replace these tables with file loading
--- (Health, Speed, Image)
-monsterStats = {
-                {3,0.5,love.graphics.newImage(enDir .. "/test.png")},
-                {3,0.8,love.graphics.newImage(enDir .. "/test2.png")}
-             } 
-monsters = {}
-
-function startPlacing(placeable)
-    
-end
 
 function drawGame()
 
@@ -30,6 +12,15 @@ function drawGame()
         end
     end
     love.graphics.setColor(255,255,255)
+
+    for i,mon in pairs(monsters) do
+    -- ASSUMING THEY ARE 48x48 FIX THIS IF NOT CHANGED
+        love.graphics.draw(mon[3],mon[4],mon[5],0,1*scale,1*scale,24,24) --<<--
+    end
+    for i, tow in pairs(towers) do
+        love.graphics.draw(tow[3],tow[1],tow[2])
+    end
+
 end
 
 function updateMonsters() 
@@ -45,21 +36,19 @@ function updateMonsters()
                  mon[6] = mon[6] +1 
             else
                 table.remove(monsters,i)
-                    spawnMonster(monsterStats[math.random(1,2)])
+                    spawnMonster("test"..math.random(1,2))
             end
         end
     end
 end
 
-function spawnMonster(monsterType)
-    table.insert(monsters, {monsterType[1], monsterType[2], monsterType[3], mapPath[1][1], mapPath[1][2], 2}) -- Spawn at Entrance
-                            -- 1Health       2Speed           3Image           4X              5Y         6Destination
+function createTower(towerType,x,y)
+    local s = towerData[tostring(towerType)]
+    table.insert(towers,{x,y, towerImages[s["image"]]})
 end
 
-function drawMonsters()
-    for i,mon in pairs(monsters) do
-        -- ASSUMING THEY ARE 48x48 FIX THIS IF NOT CHANGED
-        love.graphics.draw(mon[3],mon[4],mon[5],0,1*scale,1*scale,24,24) --<<--
-        love.graphics.print("Monsters: "..#monsters)
-    end
+function spawnMonster(monsterType)
+    local s = monsterData[tostring(monsterType)]
+    table.insert(monsters, {s["health"], s["speed"], monsterImages[s["image"]], mapPath[1][1], mapPath[1][2], 2}) -- Spawn at Entrance
+                            -- 1Health       2Speed           3Image           4X              5Y         6Destination
 end

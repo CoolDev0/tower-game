@@ -1,0 +1,14 @@
+{
+    "test1":{
+        "name": "Test 1",
+        "health": 3,
+        "speed": "0.5",
+        "image":"test.png"
+    },
+    "test2":{
+        "name": "Test 2",
+        "health": 3,
+        "speed": "0.8",
+        "image":"test2.png"
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "test1":{
+        "name": "Test 1",
+        "speed": 3,
+        "basedmg" : 1,
+        "bullet": "0.5",
+        "image":"test.png"
+    },
+    "test2":{
+        "name": "Test 2",
+        "speed": 3,
+        "basedmg" : 1,
+        "bullet": "0.5",
+        "image":"test2.png"
+    },
+    "test3":{
+        "name": "Test 3",
+        "speed": 3,
+        "basedmg" : 1,
+        "bullet": "0.5",
+        "image":"test3.png"
+    }
+}
