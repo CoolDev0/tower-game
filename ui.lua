@@ -1,8 +1,5 @@
 require "data"
 
-buttons = {}
-placingTower = 0
-
 -- square buttons only :(
 
 function drawUI()
@@ -29,8 +26,8 @@ end
 function love.mousepressed(x, y)
     if placingTower ~= 0 then
         if love.mouse.getX() < bgWidth * scale * 0.85 then
-            local image = towerImages[towerData[tostring(placingTower)]["image"]]
-            createTower(placingTower, love.mouse.getX() - image:getWidth() / 2, love.mouse.getY() - image:getHeight() / 2)
+            local image = towerImages[towerData[placingTower]["image"]]
+            createTower(placingTower, love.mouse.getX() - image:getWidth() / 2, love.mouse.getY() - image:getHeight() / 2, placingTower["range"])
             placingTower = 0
         end
     end

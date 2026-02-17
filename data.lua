@@ -1,5 +1,5 @@
-urfs = require "urfs"
-json = require "json"
+local urfs = require "urfs"
+local json = require "json"
     
 urfs.mount("data")
 urfs.setWriteDir("data")
@@ -7,10 +7,8 @@ urfs.setWriteDir("data")
 scale = 0.5 -- don't change
 
 level = "test"
-
 levelData = json.decode(love.filesystem.read("levels/"..level..".json"))
 levelBackground = love.graphics.newImage("data/assets/backgrounds/" .. levelData["background"] .. ".png")
-
 bgWidth, bgHeight = levelBackground:getPixelDimensions()
 
 newPath = {}
@@ -18,15 +16,21 @@ mapPath = levelData["path"]
 
 monsterData = json.decode(love.filesystem.read("monsters.json"))
 monsterImages = {}
+monsters = {}
 
 towerData = json.decode(love.filesystem.read("towers.json"))
 towerImages = {}
-
-monsters = {}
 towers = {}
+placingTower = 0
+
+buttons = {}
+
+projectiles = {}
 
 wave = 0
 cash = 1500
+
+timers = {}
 
 for i,v in pairs(monsterData) do
     monsterImages[v["image"]] = love.graphics.newImage("data/assets/enemies/" .. v["image"])
@@ -34,6 +38,12 @@ end
 for i,v in pairs(towerData) do
     towerImages[v["image"]] = love.graphics.newImage("data/assets/towers/" .. v["image"])
 end
+
+function getAngle(x1,y1,x2,y2)
+    return(math.atan2(y2 - y1,x2 - x1))
+end
+
+
 function love.keypressed(key)
    if key == "space" then
         table.insert(newPath, {love.mouse.getX(), love.mouse.getY()})

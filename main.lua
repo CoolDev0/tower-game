@@ -9,8 +9,17 @@ function love.load()
     createButton(bgWidth * scale * 0.87, 30+200, 150, 150, 30,"Vert","tower","test3")
     spawnMonster("test1")
 end
-
 function love.update(dt)
+        for i,v in pairs(timers) do
+            if not v[3] then
+                if v[1] > v[2] then 
+                    v[3] = true
+                    v = nil
+                else
+                    v[1] = v[1] + dt
+                end
+            end
+        end
     updateMonsters()
 end
 
