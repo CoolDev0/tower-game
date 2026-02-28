@@ -18,6 +18,11 @@ monsterData = json.decode(love.filesystem.read("monsters.json"))
 monsterImages = {}
 monsters = {}
 
+projectileData = json.decode(love.filesystem.read("projectiles.json"))
+projectileSpeed = 3
+projectileImages = {}
+projectiles = {}
+
 towerData = json.decode(love.filesystem.read("towers.json"))
 towerImages = {}
 towers = {}
@@ -25,7 +30,6 @@ placingTower = 0
 
 buttons = {}
 
-projectiles = {}
 
 wave = 0
 cash = 1500
@@ -37,6 +41,13 @@ for i,v in pairs(monsterData) do
 end
 for i,v in pairs(towerData) do
     towerImages[v["image"]] = love.graphics.newImage("data/assets/towers/" .. v["image"])
+end
+for i,v in pairs(projectileData) do
+    projectileImages[v["image"]] = love.graphics.newImage("data/assets/projectiles/" .. v["image"])
+end
+
+function getDistance(x1,y1,x2,y2)
+    return math.sqrt((math.abs(x1 - x2))^2+(math.abs(y1 - y2))^2)
 end
 
 function getAngle(x1,y1,x2,y2)

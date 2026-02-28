@@ -10,7 +10,7 @@ function drawUI()
         love.graphics.print(button[6],button[1] + button[3]*scale/2,button[2]+ button[4]*scale/2)
     end
     if placingTower ~= 0 then
-        local image = towerImages[towerData[tostring(placingTower)]["image"]]
+        local image = towerImages[towerData[placingTower]["image"]]
         love.graphics.setColor(0.8,0.8,0.8,0.8)
         love.graphics.draw(image, love.mouse.getX() - image:getWidth() / 2, love.mouse.getY() - image:getHeight() / 2)
         love.graphics.setColor(1,1,1,1)
@@ -25,14 +25,21 @@ end
 
 function love.mousepressed(x, y)
     if placingTower ~= 0 then
-        if love.mouse.getX() < bgWidth * scale * 0.85 then
+            -- check if touching other tower or path
+        if x < bgWidth * scale * 0.85 then
+            local a = true
             local image = towerImages[towerData[placingTower]["image"]]
-            createTower(placingTower, love.mouse.getX() - image:getWidth() / 2, love.mouse.getY() - image:getHeight() / 2, placingTower["range"])
-            placingTower = 0
+            for i,v in pairs(towers) do
+    
+            end
+            if a then
+                    createTower(placingTower, x - image:getWidth() / 2, y - image:getHeight() / 2)
+                    placingTower = 0
+                end
         end
     end
     for i,but in pairs(buttons) do
-        if love.mouse.getX() < but[1] + but[3]*scale and love.mouse.getX() > but[1] and love.mouse.getY() > but[2] and love.mouse.getY() < but[2] + but[4]*scale then
+        if x < but[1] + but[3]*scale and x > but[1] and y > but[2] and y < but[2] + but[4]*scale then
             if but[7] == "tower" then
                 placingTower = but[8]
             end

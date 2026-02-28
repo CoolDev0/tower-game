@@ -9,7 +9,12 @@ function love.load()
     createButton(bgWidth * scale * 0.87, 30+200, 150, 150, 30,"Vert","tower","test3")
     spawnMonster("test1")
 end
+local a = 0
 function love.update(dt)
+    if a == 400 then
+        a = 0
+        spawnMonster("test"..math.random(1,2))
+    end
         for i,v in pairs(timers) do
             if not v[3] then
                 if v[1] > v[2] then 
@@ -21,6 +26,8 @@ function love.update(dt)
             end
         end
     updateMonsters()
+    updateProjectiles()
+    a = a + 1
 end
 
 function love.draw()

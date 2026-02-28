@@ -1,0 +1,7 @@
+{
+    "test1":{
+        "name": "Test 1",
+        "damage": 1,
+        "image": "test.png"
+    }
+}
