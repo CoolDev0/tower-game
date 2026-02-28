@@ -17,6 +17,7 @@ function drawUI()
     end
     love.graphics.print("Cash: " .. cash, 0,0)
     love.graphics.print("Wave " .. wave, 0, 15)
+    love.graphics.print("Health: " .. health, 0, 30)
 end
 
 function createButton(x,y,dimx,dimy,cornerRadius, text, func, arg1)

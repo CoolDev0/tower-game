@@ -19,7 +19,7 @@ monsterImages = {}
 monsters = {}
 
 projectileData = json.decode(love.filesystem.read("projectiles.json"))
-projectileSpeed = 3
+projectileSpeed = 5
 projectileImages = {}
 projectiles = {}
 
@@ -32,7 +32,8 @@ buttons = {}
 
 
 wave = 0
-cash = 1500
+cash = 0
+health = 100
 
 timers = {}
 

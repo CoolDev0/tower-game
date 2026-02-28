@@ -1,9 +1,9 @@
 {
     "test1":{
         "name": "Test 1",
-        "cooldown": 3,
+        "cooldown": 1,
         "basedmg" : 1,
-        "bullet": "0.5",
+        "projectile": "test1",
         "range":80,
         "image":"test.png"
     },
@@ -11,7 +11,7 @@
         "name": "Test 2",
         "cooldown": 3,
         "basedmg" : 1,
-        "bullet": "0.5",
+        "projectile": "test1",
         "range":175,
         "image":"test2.png"
     },
@@ -19,7 +19,7 @@
         "name": "Test 3",
         "cooldown": 3,
         "basedmg" : 1,
-        "bullet": "0.5",
+        "projectile": "test1",
         "range":100,
         "image":"test3.png"
     }

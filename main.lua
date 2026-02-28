@@ -11,7 +11,7 @@ function love.load()
 end
 local a = 0
 function love.update(dt)
-    if a == 400 then
+    if a == 100 then
         a = 0
         spawnMonster("test"..math.random(1,2))
     end

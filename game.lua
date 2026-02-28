@@ -4,12 +4,6 @@ require "data"
 function drawGame()
     love.graphics.draw(levelBackground, 0, 0, 0, .85*scale,.85*scale)
     love.graphics.setColor(0,0,255)
-
-    for i,v in pairs(mapPath) do
-        if not(i == #mapPath)  then
-            love.graphics.line(v[1],v[2],mapPath[i+1][1],mapPath[i+1][2])
-        end
-    end
     love.graphics.setColor(255,255,255)
 
     love.graphics.print(love.timer.getFPS(), 100, 120)
@@ -17,11 +11,13 @@ function drawGame()
     for i,mon in pairs(monsters) do
     -- ASSUMING THEY ARE 48x48 FIX THIS IF NOT CHANGED
         love.graphics.draw(mon[3],mon[4],mon[5],0,1*scale,1*scale,24,24) --<<--
-        love.graphics.print(mon[1],mon[4],mon[5] - 35)
+        --love.graphics.print(mon[1],mon[4],mon[5] - 35)
     end
     for i, tow in pairs(towers) do
         love.graphics.draw(tow[3],tow[1],tow[2])
+        love.graphics.setColor(1,0,0)
         love.graphics.circle("line",tow[1] + tow[3]:getWidth() / 2,tow[2] + tow[3]:getHeight() / 2, tow[4])
+         love.graphics.setColor(1,1,1)
     end
     for i, proj in pairs(projectiles) do
         love.graphics.draw(proj[3],proj[1],proj[2],proj[4])
@@ -42,6 +38,7 @@ function updateMonsters()
                  mon[6] = mon[6] +1 
             else
                 table.remove(monsters,i)
+                health = health - mon[7]
             end
         end
         for i, tow in pairs(towers) do
@@ -59,6 +56,7 @@ function updateProjectiles()
         proj[2] = proj[2] + projectileSpeed * math.sin(angle)
         if getDistance(proj[1],proj[2],mon[4],mon[5]) < projectileSpeed then
             projectiles[i] = nil
+            cash = cash + mon[8]
             mon[1] = mon[1] - proj[6]
         end
     end
@@ -98,6 +96,5 @@ end
 
 function spawnMonster(monsterType)
     local s = monsterData[tostring(monsterType)]
-    table.insert(monsters, {s["health"], s["speed"], monsterImages[s["image"]], mapPath[1][1], mapPath[1][2], 2}) -- Spawn at Entrance
-                            -- 1Health       2Speed           3Image           4X              5Y         6Destination
+    table.insert(monsters, {s["health"], s["speed"], monsterImages[s["image"]], mapPath[1][1], mapPath[1][2], 2, s["damage"],s["reward"]})
 end

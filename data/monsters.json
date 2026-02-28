@@ -3,12 +3,16 @@
         "name": "Test 1",
         "health": 3,
         "speed": "0.5",
-        "image":"test.png"
+        "image":"test.png",
+        "damage":2,
+        "reward":25
     },
     "test2":{
         "name": "Test 2",
         "health": 3,
         "speed": "0.8",
-        "image":"test2.png"
+        "image":"test2.png",
+        "damage":1,
+        "reward":100
     }
 }
