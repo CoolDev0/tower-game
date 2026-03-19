@@ -1,6 +1,8 @@
 require "ui"
 require "data"
 
+-- Towers should have a base, and over it, the shooting thingy that rotates
+
 function drawGame()
     love.graphics.draw(levelBackground, 0, 0, 0, .85*scale,.85*scale)
     love.graphics.setColor(0,0,255)
@@ -8,21 +10,19 @@ function drawGame()
 
     love.graphics.print(love.timer.getFPS(), 100, 120)
     love.graphics.print(#monsters, 100, 100)
-    for i,mon in pairs(monsters) do
-    -- ASSUMING THEY ARE 48x48 FIX THIS IF NOT CHANGED
-        love.graphics.draw(mon[3],mon[4],mon[5],0,1*scale,1*scale,24,24) --<<--
-        --love.graphics.print(mon[1],mon[4],mon[5] - 35)
-    end
-    for i, tow in pairs(towers) do
-        love.graphics.draw(tow[3],tow[1],tow[2])
-        love.graphics.setColor(1,0,0)
-        love.graphics.circle("line",tow[1] + tow[3]:getWidth() / 2,tow[2] + tow[3]:getHeight() / 2, tow[4])
-         love.graphics.setColor(1,1,1)
-    end
-    for i, proj in pairs(projectiles) do
+        for i, proj in pairs(projectiles) do
         love.graphics.draw(proj[3],proj[1],proj[2],proj[4])
     end
-
+    for i, tow in pairs(towers) do
+        -- draw the base of the towers
+        local image = tow[3]
+        love.graphics.draw(image,tow[1],tow[2], tow[8], 48 / image:getWidth(), 48 / image:getHeight(),image:getWidth() / 2,image:getHeight() / 2)
+    end
+    for i,mon in pairs(monsters) do
+    -- ASSUMING THEY ARE 48x48 FIX THIS IF NOT CHANGED
+    love.graphics.draw(mon[3],mon[4],mon[5],0,1*scale,1*scale,24,24) --<<--
+    --love.graphics.print(mon[1],mon[4],mon[5] - 35)
+    end
 end
 
 function updateMonsters() 
@@ -37,13 +37,15 @@ function updateMonsters()
             if mon[6] < #mapPath then
                  mon[6] = mon[6] +1 
             else
-                table.remove(monsters,i)
+                monsters[i] = nil
                 health = health - mon[7]
             end
         end
-        for i, tow in pairs(towers) do
-            if getDistance(mon[4],mon[5],tow[1],tow[2]) <= tow[4] then fireTower(tow, mon) end
-        end
+            for i, tow in pairs(towers) do
+                if getDistance(mon[4],mon[5],tow[1] + tow[3]:getWidth() /2,tow[2] + tow[3]:getWidth() /2) <= tow[4] then 
+                    fireTower(tow, mon) 
+                end
+            end
     end
 end
 
@@ -74,7 +76,11 @@ function fireTower(tow, mon)
     end
 
     if tow[7] then
-        createProjectile("test1",tow[1],tow[2],mon)
+        tow[8] = (math.atan2(tow[2] - mon[5],tow[1] - mon[4])) + math.deg(90)
+        local image = tow[3]
+        local sx = 48 / image:getWidth()
+        local sy = 48 / image:getHeight()
+        createProjectile("test1",tow[1] + image:getWidth() /2*sx,tow[2] + image:getWidth() /2*sy,mon)
         tow[7] = false
     end
 end
@@ -91,7 +97,7 @@ end
 
 function createTower(towerType,x,y)
     local s = towerData[tostring(towerType)]
-    table.insert(towers,{x,y, towerImages[s["image"]], s["range"], s["cooldown"],tostring(towerType..math.random(0,100000000)), true})
+    table.insert(towers,{x,y, towerImages[s["image"]], s["range"], s["cooldown"],tostring(towerType..math.random(0,100000000)), true,0})
 end
 
 function spawnMonster(monsterType)

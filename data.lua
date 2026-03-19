@@ -4,6 +4,8 @@ local json = require "json"
 urfs.mount("data")
 urfs.setWriteDir("data")
 
+love.graphics.setDefaultFilter("nearest","nearest")
+
 scale = 0.5 -- don't change
 
 level = "test"
@@ -29,7 +31,7 @@ towers = {}
 placingTower = 0
 
 buttons = {}
-
+UIOffset = levelBackground:getWidth() * scale * .85
 
 wave = 0
 cash = 0

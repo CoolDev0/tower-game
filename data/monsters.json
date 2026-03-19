@@ -3,7 +3,7 @@
         "name": "Test 1",
         "health": 3,
         "speed": "0.5",
-        "image":"test.png",
+        "image":"test1.png",
         "damage":2,
         "reward":25
     },
