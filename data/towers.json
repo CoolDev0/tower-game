@@ -42,7 +42,7 @@
         "name": "Crossbow",
         "cooldown": 3,
         "basedmg" : 1,
-        "projectile": "test1",
+        "projectile": "bolt1",
         "range":100,
         "baseImage":"",
         "image":"crossbow.png",

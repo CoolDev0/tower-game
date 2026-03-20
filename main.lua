@@ -3,15 +3,20 @@ require "ui"
 require "data"
 
 function love.load()
-    initUI()
-    spawnMonster("test1")
+    a = 0
+    love.window.setTitle("Tower Game - Title Screen")
+    gameState = 0
 end
-local a = 0
 function love.update(dt)
-    if a == 200 then
-        a = 0
-        spawnMonster("test"..math.random(1,2))
+    if gameState == 0 then
+        gameState = 1
     end
+    if gameState == 1 then
+        if not gameRunning then initGame() end
+            if a == 10 then
+                a = 0
+                spawnMonster("test"..math.random(1,2))
+            end
         for i,v in pairs(timers) do
             if not v[3] then
                 if v[1] > v[2] then 
@@ -22,15 +27,24 @@ function love.update(dt)
                 end
             end
         end
-    updateMonsters()
-    updateProjectiles()
-    a = a + 1
+        updateMonsters()
+        updateProjectiles()
+        a = a + 1
+        if health <= 0 then
+            gameState = 0
+            gameInitialized = false
+            initGame()
+        end
+    end 
+    
 end
 
 function love.draw()
-    love.graphics.clear(255,255,255)
-    love.graphics.setColor(255,255,255)
-    drawGame()
-    drawNewPath()
-    drawUI()
+    if gameState == 1 then
+        love.graphics.clear(255,255,255)
+        love.graphics.setColor(255,255,255)
+        drawGame()
+        drawNewPath()
+        drawUI()
+    end
 end

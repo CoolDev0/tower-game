@@ -1,43 +1,28 @@
-local urfs = require "urfs"
-local json = require "json"
-    
-urfs.mount("data")
-urfs.setWriteDir("data")
+nativefs = require "nativefs"
+json = require "json"
+
+nativefs.mount("data")
 
 love.graphics.setDefaultFilter("nearest","nearest")
 
 scale = 0.5 -- don't change
 
 level = "test"
-levelData = json.decode(love.filesystem.read("levels/"..level..".json"))
-levelBackground = love.graphics.newImage("data/assets/backgrounds/" .. levelData["background"] .. ".png")
-bgWidth, bgHeight = levelBackground:getPixelDimensions()
 
 newPath = {}
-mapPath = levelData["path"]
 
 monsterData = json.decode(love.filesystem.read("monsters.json"))
 monsterImages = {}
 monsters = {}
 
 projectileData = json.decode(love.filesystem.read("projectiles.json"))
-projectileSpeed = 5
+projectileSpeed = 2
 projectileImages = {}
-projectiles = {}
 
 towerData = json.decode(love.filesystem.read("towers.json"))
 towerImages = {}
-towers = {}
-placingTower = 0
 
-buttons = {}
-UIOffset = levelBackground:getWidth() * scale * .85
-
-wave = 0
-cash = 0
-health = 100
-
-timers = {}
+maxHealth = 100
 
 for i,v in pairs(monsterData) do
     monsterImages[v["image"]] = love.graphics.newImage("data/assets/enemies/" .. v["image"])

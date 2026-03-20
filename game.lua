@@ -10,8 +10,8 @@ function drawGame()
 
     love.graphics.print(love.timer.getFPS(), 100, 120)
     love.graphics.print(#monsters, 100, 100)
-        for i, proj in pairs(projectiles) do
-        love.graphics.draw(proj[3],proj[1],proj[2],proj[4])
+    for i, proj in pairs(projectiles) do
+        love.graphics.draw(proj[3],proj[1],proj[2],proj[4],27 / proj[3]:getWidth(), 27 / proj[3]:getHeight(),proj[3]:getWidth()/2,proj[3]:getHeight()/2)
     end
     for i, tow in pairs(towers) do
         -- draw the base of the towers
@@ -27,7 +27,10 @@ end
 
 function updateMonsters() 
     for i,mon in pairs(monsters) do
-        if mon[1] <= 0 then monsters[i] = nil end
+        if mon[1] <= 0 then
+            cash = cash + mon[8]
+            monsters[i] = nil 
+        end
         local angle = getAngle(mon[4],mon[5],mapPath[mon[6]][1],mapPath[mon[6]][2])
         mon[4] = mon[4] + mon[2] * math.cos(angle)
         mon[5] = mon[5] + mon[2] * math.sin(angle)  
@@ -52,13 +55,12 @@ end
 function updateProjectiles()
     for i,proj in pairs(projectiles) do
         local mon = proj[5]
-        local angle = getAngle(proj[1],proj[2],mon[4],mon[5])
-        proj[4] = angle
-        proj[1] = proj[1] + projectileSpeed * math.cos(angle)
-        proj[2] = proj[2] + projectileSpeed * math.sin(angle)
-        if getDistance(proj[1],proj[2],mon[4],mon[5]) < projectileSpeed then
+        local angle = getAngle(proj[1],proj[2],mon[4],mon[5]) 
+        proj[4] = angle + math.deg(90)
+        proj[1] = proj[1] + proj[7] * math.cos(angle)
+        proj[2] = proj[2] + proj[7] * math.sin(angle)
+        if getDistance(proj[1],proj[2],mon[4],mon[5]) < proj[7] then
             projectiles[i] = nil
-            cash = cash + mon[8]
             mon[1] = mon[1] - proj[6]
         end
     end
@@ -80,9 +82,30 @@ function fireTower(tow, mon)
         local image = tow[3]
         local sx = 48 / image:getWidth()
         local sy = 48 / image:getHeight()
-        createProjectile("test1",tow[1] + image:getWidth() /2*sx,tow[2] + image:getWidth() /2*sy,mon)
+        createProjectile(tow[9],tow[1] + image:getWidth() /2*sx,tow[2] + image:getWidth() /2*sy,mon)
         tow[7] = false
     end
+end
+
+function initGame()
+
+    levelData = json.decode(love.filesystem.read("levels/"..level..".json"))
+    levelBackground = love.graphics.newImage("data/assets/backgrounds/" .. levelData["background"] .. ".png")
+    bgWidth, bgHeight = levelBackground:getPixelDimensions()
+    mapPath = levelData["path"]
+
+    monsters = {}
+    projectiles = {}
+    towers = {}
+    timers = {}
+    placingTower = nil
+
+    health = maxHealth
+    wave = 0
+    cash = 1500
+
+    initUI()
+    gameRunning = true
 end
 
 function createTimer(name, max)
@@ -91,13 +114,13 @@ end
 
 function createProjectile(projType,x,y,target)
     local s = projectileData[projType]
-    table.insert(projectiles, {x,y,projectileImages[s["image"]],0,target,s["damage"]})
+    table.insert(projectiles, {x,y,projectileImages[s["image"]],0,target,s["damage"], s["speed"]})
 end
 
 
 function createTower(towerType,x,y)
     local s = towerData[tostring(towerType)]
-    table.insert(towers,{x,y, towerImages[s["image"]], s["range"], s["cooldown"],tostring(towerType..math.random(0,100000000)), true,0})
+    table.insert(towers,{x,y, towerImages[s["image"]], s["range"], s["cooldown"],tostring(towerType..math.random(0,100000000)), true,0,s["projectile"]})
 end
 
 function spawnMonster(monsterType)
