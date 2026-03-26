@@ -3,25 +3,22 @@ require "data"
 
 -- Towers should have a base, and over it, the shooting thingy that rotates
 
+-- add a way to make some zones unplacable for towers
+
 function drawGame()
-    love.graphics.draw(levelBackground, 0, 0, 0, .85*scale,.85*scale)
+    love.graphics.draw(levelBackground, 0, 0, 0)
     love.graphics.setColor(0,0,255)
     love.graphics.setColor(255,255,255)
-
-    love.graphics.print(love.timer.getFPS(), 100, 120)
-    love.graphics.print(#monsters, 100, 100)
     for i, proj in pairs(projectiles) do
         love.graphics.draw(proj[3],proj[1],proj[2],proj[4],27 / proj[3]:getWidth(), 27 / proj[3]:getHeight(),proj[3]:getWidth()/2,proj[3]:getHeight()/2)
     end
     for i, tow in pairs(towers) do
         -- draw the base of the towers
         local image = tow[3]
-        love.graphics.draw(image,tow[1],tow[2], tow[8], 48 / image:getWidth(), 48 / image:getHeight(),image:getWidth() / 2,image:getHeight() / 2)
+        love.graphics.draw(image,tow[1],tow[2], tow[8], towerSize / image:getWidth(), towerSize / image:getHeight(),image:getWidth() / 2,image:getHeight() / 2)
     end
     for i,mon in pairs(monsters) do
-    -- ASSUMING THEY ARE 48x48 FIX THIS IF NOT CHANGED
     love.graphics.draw(mon[3],mon[4],mon[5],0,1*scale,1*scale,24,24) --<<--
-    --love.graphics.print(mon[1],mon[4],mon[5] - 35)
     end
 end
 
@@ -34,8 +31,6 @@ function updateMonsters()
         local angle = getAngle(mon[4],mon[5],mapPath[mon[6]][1],mapPath[mon[6]][2])
         mon[4] = mon[4] + mon[2] * math.cos(angle)
         mon[5] = mon[5] + mon[2] * math.sin(angle)  
-        -- Check if the enemy will be at the destination next frame
-        -- (mon[4] >= mapPath[mon[6]][1] - mon[2] and mon[4] <= mapPath[mon[6]][1] + mon[2])  and (mon[5] >= mapPath[mon[6]][2] - mon[2] and mon[5] <= mapPath[mon[6]][2] + mon[2])
         if getDistance(mon[4],mon[5],mapPath[mon[6]][1],mapPath[mon[6]][2]) < tonumber(mon[2]) then
             if mon[6] < #mapPath then
                  mon[6] = mon[6] +1 
@@ -80,8 +75,8 @@ function fireTower(tow, mon)
     if tow[7] then
         tow[8] = (math.atan2(tow[2] - mon[5],tow[1] - mon[4])) + math.deg(90)
         local image = tow[3]
-        local sx = 48 / image:getWidth()
-        local sy = 48 / image:getHeight()
+        local sx = towerSize / image:getWidth()
+        local sy = towerSize / image:getHeight()
         createProjectile(tow[9],tow[1] + image:getWidth() /2*sx,tow[2] + image:getWidth() /2*sy,mon)
         tow[7] = false
     end

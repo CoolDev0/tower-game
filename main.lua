@@ -13,7 +13,7 @@ function love.update(dt)
     end
     if gameState == 1 then
         if not gameRunning then initGame() end
-            if a == 10 then
+            if a == 100 then
                 a = 0
                 spawnMonster("test"..math.random(1,2))
             end

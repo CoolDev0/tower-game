@@ -7,7 +7,7 @@ love.graphics.setDefaultFilter("nearest","nearest")
 
 scale = 0.5 -- don't change
 
-level = "test"
+level = "green"
 
 newPath = {}
 
@@ -19,10 +19,18 @@ projectileData = json.decode(love.filesystem.read("projectiles.json"))
 projectileSpeed = 2
 projectileImages = {}
 
+projectileSize = 27
+towerSize = 38
+
 towerData = json.decode(love.filesystem.read("towers.json"))
 towerImages = {}
 
 maxHealth = 100
+
+fonts = {
+    ["Changa-Regular14"] = love.graphics.newFont("data/fonts/Changa-Regular.ttf", 14),
+    ["Changa-Regular22"] = love.graphics.newFont("data/fonts/Changa-Regular.ttf", 22)
+}
 
 for i,v in pairs(monsterData) do
     monsterImages[v["image"]] = love.graphics.newImage("data/assets/enemies/" .. v["image"])
@@ -56,9 +64,8 @@ function love.keypressed(key)
         end
    end
     if key == "s" then
-        if #newPath > 1 then
-            love.filesystem.write("newPath.json", json.encode(newPath))
-        end
+        print(json.encode(newPath))
+        love.filesystem.write("newPath.json", json.encode(newPath))
     end
 end
 

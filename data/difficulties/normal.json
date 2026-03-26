@@ -1,0 +1,11 @@
+{
+    "cash":1250,
+    "waves":{
+        "1":{
+            "groups":{
+                
+            },
+            "spawnDelay":1
+        }
+    }
+}
