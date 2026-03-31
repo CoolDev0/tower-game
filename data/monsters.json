@@ -1,17 +1,17 @@
 {
-    "test1":{
-        "name": "Test 1",
+    "zombie":{
+        "name": "Zombie",
         "health": 3,
         "speed": "0.5",
-        "image":"test1.png",
+        "image":"zombie.png",
         "damage":2,
         "reward":25
     },
-    "test2":{
-        "name": "Test 2",
+    "darkzombie":{
+        "name": "Zombie Sombre",
         "health": 3,
         "speed": "0.8",
-        "image":"test2.png",
+        "image":"darkzombie.png",
         "damage":1,
         "reward":100
     }

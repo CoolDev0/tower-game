@@ -15,7 +15,12 @@ function love.update(dt)
         if not gameRunning then initGame() end
             if a == 100 then
                 a = 0
-                spawnMonster("test"..math.random(1,2))
+                if math.random(1,2) == 1 then
+                    spawnMonster("zombie")
+                else
+                    spawnMonster("darkzombie")
+                end
+                
             end
         for i,v in pairs(timers) do
             if not v[3] then
@@ -27,8 +32,8 @@ function love.update(dt)
                 end
             end
         end
-        updateMonsters()
-        updateProjectiles()
+        updateMonsters(dt)
+        updateProjectiles(dt)
         a = a + 1
         if health <= 0 then
             gameState = 0

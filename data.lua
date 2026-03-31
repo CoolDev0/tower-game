@@ -7,7 +7,9 @@ love.graphics.setDefaultFilter("nearest","nearest")
 
 scale = 0.5 -- don't change
 
-level = "green"
+level = "bridge"
+
+dtmulti = 300
 
 newPath = {}
 
@@ -31,6 +33,16 @@ fonts = {
     ["Changa-Regular14"] = love.graphics.newFont("data/fonts/Changa-Regular.ttf", 14),
     ["Changa-Regular22"] = love.graphics.newFont("data/fonts/Changa-Regular.ttf", 22)
 }
+
+animations = {
+    ["Shooting"] = {
+        
+    }
+}
+
+for i,v in pairs(love.filesystem.getDirectoryItems("data/assets/towers/")) do
+    print(v)
+end
 
 for i,v in pairs(monsterData) do
     monsterImages[v["image"]] = love.graphics.newImage("data/assets/enemies/" .. v["image"])

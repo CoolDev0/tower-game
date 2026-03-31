@@ -6,7 +6,7 @@ require "data"
 -- add a way to make some zones unplacable for towers
 
 function drawGame()
-    love.graphics.draw(levelBackground, 0, 0, 0)
+    love.graphics.draw(levelBackground, 0, 0, 0, bgXS, bgYS)
     love.graphics.setColor(0,0,255)
     love.graphics.setColor(255,255,255)
     for i, proj in pairs(projectiles) do
@@ -18,20 +18,20 @@ function drawGame()
         love.graphics.draw(image,tow[1],tow[2], tow[8], towerSize / image:getWidth(), towerSize / image:getHeight(),image:getWidth() / 2,image:getHeight() / 2)
     end
     for i,mon in pairs(monsters) do
-    love.graphics.draw(mon[3],mon[4],mon[5],0,1*scale,1*scale,24,24) --<<--
+    love.graphics.draw(mon[3],mon[4],mon[5],getAngle(mon[4],mon[5],mapPath[mon[6]][1],mapPath[mon[6]][2]) - math.rad(90),36 / mon[3]:getWidth(),36 / mon[3]:getHeight(),mon[3]:getWidth() / 2, mon[3]:getHeight() / 2) --<<--
     end
 end
 
-function updateMonsters() 
+function updateMonsters(dt) 
     for i,mon in pairs(monsters) do
         if mon[1] <= 0 then
             cash = cash + mon[8]
             monsters[i] = nil 
         end
         local angle = getAngle(mon[4],mon[5],mapPath[mon[6]][1],mapPath[mon[6]][2])
-        mon[4] = mon[4] + mon[2] * math.cos(angle)
-        mon[5] = mon[5] + mon[2] * math.sin(angle)  
-        if getDistance(mon[4],mon[5],mapPath[mon[6]][1],mapPath[mon[6]][2]) < tonumber(mon[2]) then
+        mon[4] = mon[4] + mon[2] * dt * dtmulti* math.cos(angle)
+        mon[5] = mon[5] + mon[2] * dt * dtmulti* math.sin(angle)  
+        if getDistance(mon[4],mon[5],mapPath[mon[6]][1],mapPath[mon[6]][2]) < mon[2]* dt * dtmulti then
             if mon[6] < #mapPath then
                  mon[6] = mon[6] +1 
             else
@@ -47,14 +47,14 @@ function updateMonsters()
     end
 end
 
-function updateProjectiles()
+function updateProjectiles(dt)
     for i,proj in pairs(projectiles) do
         local mon = proj[5]
         local angle = getAngle(proj[1],proj[2],mon[4],mon[5]) 
         proj[4] = angle + math.deg(90)
-        proj[1] = proj[1] + proj[7] * math.cos(angle)
-        proj[2] = proj[2] + proj[7] * math.sin(angle)
-        if getDistance(proj[1],proj[2],mon[4],mon[5]) < proj[7] then
+        proj[1] = proj[1] + proj[7] * dt * dtmulti* math.cos(angle)
+        proj[2] = proj[2] + proj[7] * dt * dtmulti* math.sin(angle)
+        if getDistance(proj[1],proj[2],mon[4],mon[5]) < proj[7]* dt * dtmulti then
             projectiles[i] = nil
             mon[1] = mon[1] - proj[6]
         end
@@ -86,7 +86,10 @@ function initGame()
 
     levelData = json.decode(love.filesystem.read("levels/"..level..".json"))
     levelBackground = love.graphics.newImage("data/assets/backgrounds/" .. levelData["background"] .. ".png")
-    bgWidth, bgHeight = levelBackground:getPixelDimensions()
+    bgXS = 979 / levelBackground:getWidth()
+    bgYS = 739 / levelBackground:getHeight()
+    bgWidth = levelBackground:getWidth() * bgXS
+    bgHeight = levelBackground:getHeight() * bgYS
     mapPath = levelData["path"]
 
     monsters = {}

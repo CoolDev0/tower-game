@@ -54,6 +54,8 @@ function drawUI()
 
     love.graphics.setFont(fonts["Changa-Regular22"])
     love.graphics.print(cash, sidebarOffset-190, 16)
+    love.graphics.print("Wave " .. wave, bgWidth / 2, 16)
+    love.graphics.print(math.ceil(health / maxHealth * 100) .. " %", hpX + uiImages["healthbar"]:getWidth() * 2.52 + 10, hpY - 9)
     love.graphics.setFont(fonts["Changa-Regular14"])
 
     love.graphics.draw(uiImages["coins"],sidebarOffset - 45, 23,0,1.25)
