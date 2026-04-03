@@ -10,8 +10,8 @@ local hpY = 25
 
 -- add animations for like when you gain money or enemies die or you take damage
 
--- UI Images
 
+-- UI Images
 local uiImages = {
     ["healthbar"] = love.graphics.newImage("data/assets/ui/healthbar.png"),
     ["heart"] = love.graphics.newImage("data/assets/ui/heart.png"),
@@ -21,14 +21,13 @@ local uiImages = {
 local sidebarWidth = 300
 local sidebarOffset = 1280 - sidebarWidth
 
--- square buttons only :(
 function drawUI()
     love.graphics.setFont(fonts["Changa-Regular14"])
 
     for i,button in pairs(buttons) do
         if button[7] == "tower" then
             love.graphics.setColor(0,0,0)
-            local image = towerImages[button[8] .. ".png"]
+            local image = towerImages[button[8]]["Default"][1]
             love.graphics.rectangle("line",button[1],button[2],button[3]*scale,button[4]*scale,button[5]*scale)
             local t = towerData[button[8]]["name"]
             local t2 = towerData[button[8]]["price"] .. " $"
@@ -44,7 +43,7 @@ function drawUI()
         end
     end
 
-    love.graphics.setColor(0,0,0)
+    love.graphics.setColor(0.149, 0.094, 0.149)
     love.graphics.rectangle("fill",hpX,hpY,280,19)
     love.graphics.setColor(maxHealth / health - 0.5,health / maxHealth,0)
     love.graphics.rectangle("fill",hpX,hpY,280/(maxHealth/health),19)
@@ -82,7 +81,7 @@ function drawUI()
             r = 0.8
             g = 0
         end
-        local image = towerImages[towerData[placingTower]["image"]]
+        local image = towerImages[placingTower]["Default"][1]
         love.graphics.setColor(r,g,0,0.8)
         love.graphics.circle("line",love.mouse.getX(),love.mouse.getY(), towerData[placingTower]["range"])
          love.graphics.setColor(r,g,0,0.2)
@@ -107,27 +106,27 @@ function initUI()
     love.window.setTitle("Tower Game - " .. levelData["name"])
 
     createButton(buttonOffset, 30, 175, 175, 30,"","tower","crossbow")
-    createButton(buttonOffset, 30+100, 175, 175, 30,"","tower","test2")
-    createButton(buttonOffset, 30+200, 175, 175, 30,"","tower","test3")
+    createButton(buttonOffset, 30+100, 175, 175, 30,"","tower","crossbow")
+    createButton(buttonOffset, 30+200, 175, 175, 30,"","tower","crossbow")
 
-    createButton(buttonOffset +100, 30, 175, 175, 30,"","tower","test1")
-    createButton(buttonOffset +100, 30+100, 175, 175, 30,"","tower","test2")
-    createButton(buttonOffset +100, 30+200, 175, 175, 30,"","tower","test3")
+    createButton(buttonOffset +100, 30, 175, 175, 30,"","tower","crossbow")
+    createButton(buttonOffset +100, 30+100, 175, 175, 30,"","tower","crossbow")
+    createButton(buttonOffset +100, 30+200, 175, 175, 30,"","tower","crossbow")
 
-    createButton(buttonOffset +200, 30, 175, 175, 30,"","tower","test1")
-    createButton(buttonOffset +200, 30+100, 175, 175, 30,"","tower","test2")
-    createButton(buttonOffset +200, 30+200, 175, 175, 30,"","tower","test3")
+    createButton(buttonOffset +200, 30, 175, 175, 30,"","tower","crossbow")
+    createButton(buttonOffset +200, 30+100, 175, 175, 30,"","tower","crossbow")
+    createButton(buttonOffset +200, 30+200, 175, 175, 30,"","tower","crossbow")
 
-    createButton(buttonOffset +300, 30, 175, 175, 30,"","tower","test1")
-    createButton(buttonOffset +300, 30+100, 175, 175, 30,"","tower","test2")
-    createButton(buttonOffset +300, 30+200, 175, 175, 30,"","tower","test3")
+    createButton(buttonOffset +300, 30, 175, 175, 30,"","tower","crossbow")
+    createButton(buttonOffset +300, 30+100, 175, 175, 30,"","tower","crossbow")
+    createButton(buttonOffset +300, 30+200, 175, 175, 30,"","tower","crossbow")
 end
 
 function love.mousepressed(x, y)
     if placingTower ~= nil then
         if canPlace then
             local a = true
-            local image = towerImages[towerData[placingTower]["image"]]
+            local image = towerImages[placingTower]["Default"][1]
             local sx = towerSize / image:getWidth()
             local sy = towerSize / image:getHeight()
             cash = cash - towerData[placingTower]["price"]

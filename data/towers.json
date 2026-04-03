@@ -1,54 +1,21 @@
 {
-    "test1":{
-        "name": "Test 1",
-        "cooldown": 1,
-        "basedmg" : 1,
-        "projectile": "test1",
-        "range":80,
-        "baseImage":"",
-        "image":"test1.png",
-        "price":100,
-        "upgrades":{
-            
-        }
-    },
-    "test2":{
-        "name": "Test 2",
+  "crossbow": {
+    "name": "Arbalette",
+    "cooldown": 3,
+    "projectile": "bolt1",
+    "range": 100,
+    "baseImage": "crossbow1Base",
+    "image": "crossbow1",
+    "price": 100,
+    "upgrades": {
+      "2": {
         "cooldown": 3,
-        "basedmg" : 1,
-        "projectile": "test1",
-        "range":175,
-        "baseImage":"",
-        "image":"test2.png",
-        "price":150,
-        "upgrades":{
-            
-        }
-    },
-    "test3":{
-        "name": "Test 3",
-        "cooldown": 3,
-        "basedmg" : 1,
-        "projectile": "test1",
-        "range":100,
-        "baseImage":"",
-        "image":"test3.png",
-        "price":125,
-        "upgrades":{
-            
-        }
-    },
-    "crossbow":{
-        "name": "Crossbow",
-        "cooldown": 3,
-        "basedmg" : 1,
         "projectile": "bolt1",
-        "range":100,
-        "baseImage":"",
-        "image":"crossbow.png",
-        "price":100,
-        "upgrades":{
-            
-        }
+        "range": 100,
+        "baseImage": "crossbow2Base",
+        "image": "crossbow2",
+        "price": 100
+      }
     }
+  }
 }

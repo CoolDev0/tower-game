@@ -1,18 +1,18 @@
 {
-    "zombie":{
-        "name": "Zombie",
-        "health": 3,
-        "speed": "0.5",
-        "image":"zombie.png",
-        "damage":2,
-        "reward":25
-    },
-    "darkzombie":{
-        "name": "Zombie Sombre",
-        "health": 3,
-        "speed": "0.8",
-        "image":"darkzombie.png",
-        "damage":1,
-        "reward":100
-    }
+  "zombie": {
+    "name": "Zombie",
+    "health": 3,
+    "speed": "0.5",
+    "image": "zombie.png",
+    "damage": 2,
+    "reward": 25
+  },
+  "darkzombie": {
+    "name": "Zombie Sombre",
+    "health": 3,
+    "speed": "0.8",
+    "image": "darkzombie.png",
+    "damage": 1,
+    "reward": 100
+  }
 }

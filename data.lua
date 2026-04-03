@@ -18,7 +18,7 @@ monsterImages = {}
 monsters = {}
 
 projectileData = json.decode(love.filesystem.read("projectiles.json"))
-projectileSpeed = 2
+projectileSpeed = 4
 projectileImages = {}
 
 projectileSize = 27
@@ -35,21 +35,46 @@ fonts = {
 }
 
 animations = {
-    ["Shooting"] = {
+    ["Shooting"] = {    
         
     }
 }
 
-for i,v in pairs(love.filesystem.getDirectoryItems("data/assets/towers/")) do
-    print(v)
-end
-
 for i,v in pairs(monsterData) do
     monsterImages[v["image"]] = love.graphics.newImage("data/assets/enemies/" .. v["image"])
 end
+
+local animations = {
+    ["shoot"] = {
+        ["Length"] = 2
+    }
+}
+
 for i,v in pairs(towerData) do
-    towerImages[v["image"]] = love.graphics.newImage("data/assets/towers/" .. v["image"])
+    towerImages[i] = {
+        ["Default"] = {},
+        ["Base"] = {},
+        ["Animations"] = {
+            ["shoot"] = {
+            }
+      }
+    }
+    towerImages[i]["Default"][1] = love.graphics.newImage("data/assets/towers/" .. v["image"] .. ".png")
+    towerImages[i]["Base"][1] = love.graphics.newImage("data/assets/towers/" .. v["baseImage"] .. ".png")
+
+    for upgradeNumber,upgradeData in pairs(v["upgrades"]) do
+        towerImages[i]["Default"][tonumber(upgradeNumber)] = love.graphics.newImage("data/assets/towers/" .. upgradeData["image"] .. ".png")
+        towerImages[i]["Base"][tonumber(upgradeNumber)] = love.graphics.newImage("data/assets/towers/" .. upgradeData["baseImage"] .. ".png")
+
+        for a,v in pairs(animations) do
+            for n = 1, v["Length"], 1 do
+              towerImages[i]["Animations"][a][tonumber(upgradeNumber)] = {}
+              towerImages[i]["Animations"][a][tonumber(upgradeNumber)][n] = love.graphics.newImage("data/assets/towers/" .. upgradeData["image"] .. "_" .. a .. n .. ".png")
+            end
+      end
+    end
 end
+
 for i,v in pairs(projectileData) do
     projectileImages[v["image"]] = love.graphics.newImage("data/assets/projectiles/" .. v["image"])
 end

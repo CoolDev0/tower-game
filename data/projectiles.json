@@ -1,14 +1,14 @@
 {
-    "test1":{
-        "name": "Test 1",
-        "damage": 1,
-        "image": "test.png",
-        "speed": 2
-    },
-    "bolt1":{
-        "name": "Wooden Bolt",
-        "damage": 100,
-        "image": "bolt1.png",
-        "speed": 5
-    }
+  "test1": {
+    "name": "Test 1",
+    "damage": 1,
+    "image": "test.png",
+    "speed": 2
+  },
+  "bolt1": {
+    "name": "Wooden Bolt",
+    "damage": 100,
+    "image": "bolt1.png",
+    "speed": 5
+  }
 }
