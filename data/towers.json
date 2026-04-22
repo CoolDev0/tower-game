@@ -1,6 +1,6 @@
 {
   "crossbow": {
-    "name": "Arbalette",
+    "name": "",
     "cooldown": 3,
     "projectile": "bolt1",
     "range": 100,

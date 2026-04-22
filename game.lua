@@ -74,8 +74,9 @@ function fireTower(tow, mon)
         local image = tow["Image"]
         local sx = towerSize / image:getWidth()
         local sy = towerSize / image:getHeight()
-        createProjectile(tow["Projectile"],tow["Position"][1] + image:getWidth() /2*sx,tow["Position"][2] + image:getWidth() /2*sy,mon)
         tow["canFire"] = false
+        playAnimation(tow,"shoot")
+        createProjectile(tow["Projectile"],tow["Position"][1] + image:getWidth() /2*sx,tow["Position"][2] + image:getWidth() /2*sy,mon)
     end
 end
 
@@ -121,6 +122,26 @@ function createProjectile(projType,x,y,target)
     table.insert(projectiles,t)
 end
 
+function playAnimation(tower,animation, endFunction)
+    tower["Animation"]["Name"] = animation
+    tower["Animation"]["Frame"] = 1
+end
+
+function updateAnimations(dt)
+    -- fix some stuff and then it finally works
+    for i,v in pairs(towers) do
+        if v["Animation"]["Name"] ~= nil then
+            if v["Animation"]["Frame"] <= animations[v["Animation"]["Name"]]["Length"] then
+                 v["Animation"]["Frame"] = v["Animation"]["Frame"] + dt * 5
+                v["Image"] = towerImages["crossbow"]["Animations"][v["Animation"]["Name"]][v["Upgrade"]][math.floor(v["Animation"]["Frame"])]
+            else
+                v["Animation"]["Name"] = nil
+                v["Animation"]["Frame"] = 0
+                v["Image"] = towerImages["crossbow"]["Default"][v["Upgrade"]]
+            end
+        end
+    end
+end
 
 function createTower(towerType,x,y)
     local s = towerData[tostring(towerType)]
@@ -131,7 +152,7 @@ function createTower(towerType,x,y)
             ["Name"] = nil,
             ["Frame"] = 0
         },
-        ["Upgrade"] = 2,
+        ["Upgrade"] = l,
         ["Image"] = towerImages[placingTower]["Default"][l],
         ["BaseImage"] = towerImages[placingTower]["Base"][l],
         ["Rotation"] = 0,

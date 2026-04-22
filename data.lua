@@ -7,7 +7,7 @@ love.graphics.setDefaultFilter("nearest","nearest")
 
 scale = 0.5 -- don't change
 
-level = "bridge"
+level = "black"
 
 dtmulti = 300
 
@@ -21,7 +21,7 @@ projectileData = json.decode(love.filesystem.read("projectiles.json"))
 projectileSpeed = 4
 projectileImages = {}
 
-projectileSize = 27
+projectileSize = 16
 towerSize = 38
 
 towerData = json.decode(love.filesystem.read("towers.json"))
@@ -44,7 +44,7 @@ for i,v in pairs(monsterData) do
     monsterImages[v["image"]] = love.graphics.newImage("data/assets/enemies/" .. v["image"])
 end
 
-local animations = {
+animations = {
     ["shoot"] = {
         ["Length"] = 2
     }
@@ -62,13 +62,24 @@ for i,v in pairs(towerData) do
     towerImages[i]["Default"][1] = love.graphics.newImage("data/assets/towers/" .. v["image"] .. ".png")
     towerImages[i]["Base"][1] = love.graphics.newImage("data/assets/towers/" .. v["baseImage"] .. ".png")
 
+    for a,k in pairs(animations) do
+        for n = 1, k["Length"], 1 do
+            if not towerImages[i]["Animations"][a][1] then
+                towerImages[i]["Animations"][a][1] = {}
+            end
+            towerImages[i]["Animations"][a][1][n] = love.graphics.newImage("data/assets/towers/" .. v["image"] .. "_" .. a .. n .. ".png")
+        end
+     end
+
     for upgradeNumber,upgradeData in pairs(v["upgrades"]) do
         towerImages[i]["Default"][tonumber(upgradeNumber)] = love.graphics.newImage("data/assets/towers/" .. upgradeData["image"] .. ".png")
         towerImages[i]["Base"][tonumber(upgradeNumber)] = love.graphics.newImage("data/assets/towers/" .. upgradeData["baseImage"] .. ".png")
 
-        for a,v in pairs(animations) do
-            for n = 1, v["Length"], 1 do
-              towerImages[i]["Animations"][a][tonumber(upgradeNumber)] = {}
+        for a,k in pairs(animations) do
+            for n = 1, k["Length"], 1 do
+              if not towerImages[i]["Animations"][a][tonumber(upgradeNumber)] then
+                    towerImages[i]["Animations"][a][tonumber(upgradeNumber)] = {}
+              end
               towerImages[i]["Animations"][a][tonumber(upgradeNumber)][n] = love.graphics.newImage("data/assets/towers/" .. upgradeData["image"] .. "_" .. a .. n .. ".png")
             end
       end

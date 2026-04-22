@@ -32,6 +32,7 @@ function love.update(dt)
                 end
             end
         end
+        updateAnimations(dt)
         updateMonsters(dt)
         updateProjectiles(dt)
         a = a + 1
