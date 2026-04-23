@@ -15,23 +15,32 @@ local hpY = 25
 local uiImages = {
     ["healthbar"] = love.graphics.newImage("data/assets/ui/healthbar.png"),
     ["heart"] = love.graphics.newImage("data/assets/ui/heart.png"),
-    ["coins"] = love.graphics.newImage("data/assets/ui/coins.png")
+    ["coins"] = love.graphics.newImage("data/assets/ui/coins.png"),
+    ["sidebar"] = love.graphics.newImage("data/assets/ui/sidebar.png")
 }
 
 local sidebarWidth = 300
-local sidebarOffset = 1280 - sidebarWidth
+local sidebarOffset = 1278 - sidebarWidth
 
 function drawUI()
+    love.graphics.setColor(1,1,1)
     love.graphics.setFont(fonts["Changa-Regular14"])
 
+    for y=0,720 / uiImages["sidebar"]:getHeight() * 1.5,1 do
+        for x=0,sidebarWidth / uiImages["sidebar"]:getWidth()* 1.5,1 do
+            love.graphics.draw(uiImages["sidebar"],sidebarOffset + uiImages["sidebar"]:getWidth()* 1.5 * x,y * uiImages["sidebar"]:getHeight()* 1.5,0,1.5,1.5)
+        end
+    end
+    --love.graphics.draw(uiImages["sidebar"],sidebarOffset,0)
     for i,button in pairs(buttons) do
         if button[7] == "tower" then
+            love.graphics.setColor(1,1,1)
+            love.graphics.rectangle("fill",button[1],button[2],button[3]*scale,button[4]*scale,button[5]*scale)
             love.graphics.setColor(0,0,0)
-            local image = towerImages[button[8]]["Default"][1]
             love.graphics.rectangle("line",button[1],button[2],button[3]*scale,button[4]*scale,button[5]*scale)
+            local image = towerImages[button[8]]["Default"][1]
             local t = towerData[button[8]]["name"]
             local t2 = towerData[button[8]]["price"] .. " $"
-            love.graphics.setColor(0,0,0)
             love.graphics.print(t,button[1] + (button[3] * scale - love.graphics.getFont():getWidth(t)) / 2, button[2])
             love.graphics.print(t2,button[1] + (button[3] * scale - love.graphics.getFont():getWidth(t2)) / 2, button[2] + (button[4] - love.graphics.getFont():getHeight(t2)) /2.33)
             love.graphics.setColor(1,1,1)
@@ -100,26 +109,26 @@ end
 
 function initUI()
     love.graphics.setFont(fonts["Changa-Regular14"])
-    buttonOffset = sidebarOffset + 6
+    buttonOffset = sidebarOffset + 8
     buttons = {}
 
     love.window.setTitle("Tower Game - " .. levelData["name"])
 
-    createButton(buttonOffset, 30, 175, 175, 30,"","tower","crossbow")
-    createButton(buttonOffset, 30+100, 175, 175, 30,"","tower","crossbow")
-    createButton(buttonOffset, 30+200, 175, 175, 30,"","tower","crossbow")
+    createButton(buttonOffset, 30, 175, 175, 30,"","tower","crossbow1")
+    createButton(buttonOffset, 30+100, 175, 175, 30,"","tower","cannon1")
+    createButton(buttonOffset, 30+200, 175, 175, 30,"","tower","cannon1")
 
-    createButton(buttonOffset +100, 30, 175, 175, 30,"","tower","crossbow")
-    createButton(buttonOffset +100, 30+100, 175, 175, 30,"","tower","crossbow")
-    createButton(buttonOffset +100, 30+200, 175, 175, 30,"","tower","crossbow")
+    createButton(buttonOffset +100, 30, 175, 175, 30,"","tower","crossbow1")
+    createButton(buttonOffset +100, 30+100, 175, 175, 30,"","tower","crossbow1")
+    createButton(buttonOffset +100, 30+200, 175, 175, 30,"","tower","cannon1")
 
-    createButton(buttonOffset +200, 30, 175, 175, 30,"","tower","crossbow")
-    createButton(buttonOffset +200, 30+100, 175, 175, 30,"","tower","crossbow")
-    createButton(buttonOffset +200, 30+200, 175, 175, 30,"","tower","crossbow")
+    createButton(buttonOffset +200, 30, 175, 175, 30,"","tower","crossbow1")
+    createButton(buttonOffset +200, 30+100, 175, 175, 30,"","tower","cannon1")
+    createButton(buttonOffset +200, 30+200, 175, 175, 30,"","tower","crossbow1")
 
-    createButton(buttonOffset +300, 30, 175, 175, 30,"","tower","crossbow")
-    createButton(buttonOffset +300, 30+100, 175, 175, 30,"","tower","crossbow")
-    createButton(buttonOffset +300, 30+200, 175, 175, 30,"","tower","crossbow")
+    createButton(buttonOffset +300, 30, 175, 175, 30,"","tower","crossbow1")
+    createButton(buttonOffset +300, 30+100, 175, 175, 30,"","tower","cannon1")
+    createButton(buttonOffset +300, 30+200, 175, 175, 30,"","tower","crossbow1")
 end
 
 function love.mousepressed(x, y)

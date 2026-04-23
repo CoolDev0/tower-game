@@ -15,7 +15,7 @@ function drawGame()
         love.graphics.draw(tow["Image"],tow["Position"][1],tow["Position"][2], tow["Rotation"], towerSize / tow["Image"]:getWidth(), towerSize / tow["Image"]:getHeight(),tow["Image"]:getWidth() / 2,tow["Image"]:getHeight() / 2)
     end
     for i,mon in pairs(monsters) do
-    love.graphics.draw(mon["Image"],mon["Position"][1],mon["Position"][2],getAngle(mon["Position"][1],mon["Position"][2],mapPath[mon["Destination"]][1],mapPath[mon["Destination"]][2]) - math.rad(90),36 / mon["Image"]:getWidth(),36 / mon["Image"]:getHeight(),mon["Image"]:getWidth() / 2, mon["Image"]:getHeight() / 2) --<<--
+    love.graphics.draw(mon["Image"],mon["Position"][1],mon["Position"][2],getAngle(mon["Position"][1],mon["Position"][2],mapPath[mon["Destination"]][1],mapPath[mon["Destination"]][2]) - math.rad(90),36 / mon["Image"]:getWidth(),36 / mon["Image"]:getHeight(),mon["Image"]:getWidth() / 2, mon["Image"]:getHeight() / 2)
     end
 end
 
@@ -128,25 +128,26 @@ function playAnimation(tower,animation, endFunction)
 end
 
 function updateAnimations(dt)
-    -- fix some stuff and then it finally works
     for i,v in pairs(towers) do
         if v["Animation"]["Name"] ~= nil then
-            if v["Animation"]["Frame"] <= animations[v["Animation"]["Name"]]["Length"] then
+            if v["Animation"]["Frame"] <= tonumber(animations[v["Animation"]["Name"]][v["Type"]]) then
                  v["Animation"]["Frame"] = v["Animation"]["Frame"] + dt * 5
-                v["Image"] = towerImages["crossbow"]["Animations"][v["Animation"]["Name"]][v["Upgrade"]][math.floor(v["Animation"]["Frame"])]
+                v["Image"] = towerImages[v["Type"]]["Animations"][v["Animation"]["Name"]][v["Upgrade"]][math.floor(v["Animation"]["Frame"])]
             else
                 v["Animation"]["Name"] = nil
                 v["Animation"]["Frame"] = 0
-                v["Image"] = towerImages["crossbow"]["Default"][v["Upgrade"]]
+                v["Image"] = towerImages[v["Type"]]["Default"][v["Upgrade"]]
+                -- shoot now ?
             end
         end
     end
 end
 
 function createTower(towerType,x,y)
-    local s = towerData[tostring(towerType)]
-    local l  = math.random(1,2)
+    local s = towerData[towerType]
+    local l  = 1
     local t = {
+        ["Type"] = towerType,
         ["Position"] = {x,y},
         ["Animation"] = {
             ["Name"] = nil,

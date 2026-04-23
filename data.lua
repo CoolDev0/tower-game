@@ -7,7 +7,7 @@ love.graphics.setDefaultFilter("nearest","nearest")
 
 scale = 0.5 -- don't change
 
-level = "black"
+level = "green"
 
 dtmulti = 300
 
@@ -34,36 +34,53 @@ fonts = {
     ["Changa-Regular22"] = love.graphics.newFont("data/fonts/Changa-Regular.ttf", 22)
 }
 
-animations = {
-    ["Shooting"] = {    
-        
-    }
-}
-
 for i,v in pairs(monsterData) do
     monsterImages[v["image"]] = love.graphics.newImage("data/assets/enemies/" .. v["image"])
 end
 
+
 animations = {
-    ["shoot"] = {
-        ["Length"] = 2
-    }
+
 }
+
+for _i,s in pairs(love.filesystem.getDirectoryItems("data/assets/towers")) do
+    local si, _ei = string.find(s,"_")
+    if si then
+        local name = string.sub(s,0,si-1)
+        local animation = string.sub(s,si +1,string.len(s) - 5)
+        local frame = string.sub(s,string.len(s) - 4,string.len(s) - 4)
+
+        if not animations[animation] then
+            animations[animation] = {}
+        end
+        if not animations[animation][name] then
+            animations[animation][name] = frame
+        elseif frame > animations[animation][name] then
+            animations[animation][name] = frame
+        end
+    end
+end
+
+for i,v in pairs(animations) do
+    for n,m in pairs(v) do
+        print(i .. " " .. n .. " " .. m)
+    end
+end
 
 for i,v in pairs(towerData) do
     towerImages[i] = {
         ["Default"] = {},
         ["Base"] = {},
         ["Animations"] = {
-            ["shoot"] = {
-            }
       }
     }
     towerImages[i]["Default"][1] = love.graphics.newImage("data/assets/towers/" .. v["image"] .. ".png")
     towerImages[i]["Base"][1] = love.graphics.newImage("data/assets/towers/" .. v["baseImage"] .. ".png")
-
     for a,k in pairs(animations) do
-        for n = 1, k["Length"], 1 do
+        if not towerImages[i]["Animations"][a] then
+            towerImages[i]["Animations"][a] = {}
+        end
+        for n = 1, animations[a][i], 1 do
             if not towerImages[i]["Animations"][a][1] then
                 towerImages[i]["Animations"][a][1] = {}
             end
@@ -76,7 +93,10 @@ for i,v in pairs(towerData) do
         towerImages[i]["Base"][tonumber(upgradeNumber)] = love.graphics.newImage("data/assets/towers/" .. upgradeData["baseImage"] .. ".png")
 
         for a,k in pairs(animations) do
-            for n = 1, k["Length"], 1 do
+            if not towerImages[i]["Animations"][a] then
+                towerImages[i]["Animations"][a] = {}
+            end
+            for n = 1, animations[a][i], 1 do
               if not towerImages[i]["Animations"][a][tonumber(upgradeNumber)] then
                     towerImages[i]["Animations"][a][tonumber(upgradeNumber)] = {}
               end
@@ -111,7 +131,7 @@ function love.keypressed(key)
             end
         end
    end
-    if key == "s" then
+   if key == "s" then
         print(json.encode(newPath))
         love.filesystem.write("newPath.json", json.encode(newPath))
     end

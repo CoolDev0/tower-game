@@ -1,6 +1,6 @@
 {
-  "crossbow": {
-    "name": "",
+  "crossbow1": {
+    "name": "crossbow",
     "cooldown": 3,
     "projectile": "bolt1",
     "range": 100,
@@ -16,6 +16,17 @@
         "image": "crossbow2",
         "price": 100
       }
+    }
+  },
+  "cannon1": {
+    "name": "cannon",
+    "cooldown": 3,
+    "projectile": "bolt1",
+    "range": 100,
+    "baseImage": "blank",
+    "image": "cannon1",
+    "price": 100,
+    "upgrades": {
     }
   }
 }
